@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+       http://www.springframework.org/schema/context 
+       http://www.springframework.org/schema/context/spring-context-4.0.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+       http://www.springframework.org/schema/data/mongo   
+       http://www.springframework.org/schema/data/mongo/spring-mongo-1.8.xsd
+       http://www.springframework.org/schema/mvc 
+       http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
+
+	<!-- 扫描类包，将标注Spring注解的类自动转化Bean，同时完成Bean的注入 -->
+    <!-- <context:component-scan base-package="com.smart.dao" />
+    <context:component-scan base-package="com.smart.common" /> -->
+	<context:component-scan base-package="mongodb"/>
+   <!--  <mongo:mongo-client host="192.168.4.122" port="27017" credentials="bapuser:bapuser123@amcloud">
+    </mongo:mongo-client> -->
+    <mongo:mongo id="mongo" host="192.168.4.212" port="27017" >
+    </mongo:mongo>
+    <!-- mongo的工厂，通过它来取得mongo实例,dbname为mongodb的数据库名，没有的话会自动创建 -->  
+    <mongo:db-factory 
+    	id="mongoDbFactory"
+    	mongo-ref="mongo"
+    	dbname="xuan"
+    	username="123"
+    	password="123"
+    />  
+    
+	
+    <!-- mongodb的主要操作对象，所有对mongodb的增删改查的操作都是通过它完成 -->  
+    <bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">  
+        <constructor-arg name="mongoDbFactory" ref="mongoDbFactory" />  
+    </bean>  
+
+    <context:annotation-config />  
+
+</beans>
